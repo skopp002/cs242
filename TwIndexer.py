@@ -109,7 +109,7 @@ if __name__=='__main__':
         indexing(sys.argv[1])
         print("Indexing Complete")
         print("................................................")
-        print("Lets try searching the index for"+sys.argv[2])
+        print("Lets try searching the index for -> "+sys.argv[2])
         retrieving(sys.argv[2])
         print("................................................")
         index_scan()
