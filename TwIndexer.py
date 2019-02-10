@@ -2,7 +2,10 @@ import lucene, json
 from org.apache.lucene.document import Document, Field, FieldType, StringField, TextField, IntPoint
 from org.apache.lucene.index import IndexWriterConfig, IndexWriter
 from org.apache.lucene.index import IndexReader
+#from org.apache.lucene.analysis.snowball import SnowballAnalyzer
 from org.apache.lucene.analysis.standard import StandardAnalyzer
+from org.apache.lucene.analysis.core import WhitespaceAnalyzer, KeywordAnalyzer, SimpleAnalyzer
+from org.apache.lucene.analysis.en import EnglishAnalyzer
 from org.apache.lucene.store import SimpleFSDirectory, FSDirectory
 from org.apache.lucene.queryparser.classic import QueryParser
 from org.apache.lucene.search import IndexSearcher
@@ -30,11 +33,11 @@ def retrieving(searchword):
     idxDocs = reader.maxDoc()
     print("We have ", idxDocs, " indexed documents")
     searcher = IndexSearcher(reader)
-    analyzer = StandardAnalyzer()
+    idx_analyzer = StandardAnalyzer()
     #Search for the input term in field stored as text
     # To look into multiple fields, try  MultiFieldQueryParser, but it is not recommended.
     # Its best to club everything we want to search into a single search field and try WildCard matching on it
-    query = QueryParser("text", analyzer).parse(searchword)
+    query = QueryParser("text", idx_analyzer).parse(searchword)
     MAX = 1000
     hits = searcher.search(query, MAX)
     print ("Found %d document(s) that matched query '%s':" % (hits.totalHits, query))
@@ -48,6 +51,8 @@ def retrieving(searchword):
 
 
 
+
+
 def indexing(datadir):
     indexedDocs = 0
     doc = Document()
@@ -57,7 +62,7 @@ def indexing(datadir):
     analyzer = StandardAnalyzer()
     config = IndexWriterConfig(analyzer)
     writer = IndexWriter(indexOut, config)
-    for filename in glob.iglob(datadir + '/*.json', recursive=True):
+    for filename in glob.iglob(datadir + '/*.json*', recursive=True):
         try:
             print("Filename is", filename)
             #pdb.set_trace()
@@ -104,7 +109,8 @@ def index_scan():
 if __name__=='__main__':
     lucene.initVM(vmargs=['-Djava.awt.headless=true'])
     if(len(sys.argv) < 3) :
-        print ("Incorrect Usage !! Specify relative path to the input directory")
+        print ("Incorrect Usage !!")
+        print("Usage : python TwIndexer.py <dir with json data files> <search word>")
     else:
         indexing(sys.argv[1])
         print("Indexing Complete")
