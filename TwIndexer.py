@@ -19,7 +19,7 @@ import org.apache.lucene.store
 from org.apache.lucene import analysis, document, index, queryparser, search, store, util
 import sys
 
-
+print("h")
 import pdb
 import glob
 
