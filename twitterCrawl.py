@@ -4,8 +4,6 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-#used for creating an executable version.
-import auto_py_to_exe
 
 #credentials to access twitter dev account from separate file.
 import twtrCreds
