@@ -6,7 +6,8 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 
 #credentials to access twitter dev account from separate file.
-import twtrCreds
+from parta import twtrCreds
+
 
 #We will be obtaining tweets via a stream...
 # Class allowing streaming of live tweets

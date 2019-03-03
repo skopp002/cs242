@@ -32,7 +32,7 @@ def retrieving(searchword):
     idxDocs = reader.maxDoc()
     print("We have ", idxDocs, " indexed documents")
     searcher = IndexSearcher(reader)
-    idx_analyzer = StandardAnalyzer()
+    idx_analyzer = EnglishAnalyzer()
     #Search for the input term in field stored as text
     # To look into multiple fields, try  MultiFieldQueryParser, but it is not recommended.
     # Its best to club everything we want to search into a single search field and try WildCard matching on it
@@ -58,7 +58,7 @@ def indexing(datadir):
     #index_outdir = str(input("Enter index output dir: "))
     path = Paths.get('indexOut')
     indexOut = SimpleFSDirectory(path)
-    analyzer = StandardAnalyzer()
+    analyzer = EnglishAnalyzer()
     config = IndexWriterConfig(analyzer)
     writer = IndexWriter(indexOut, config)
     for filename in glob.iglob(datadir + '/*.json*', recursive=True):
@@ -75,9 +75,9 @@ def indexing(datadir):
                     # doc.add(Field("name", tweet['user.name']))
                     #doc.add(Field("location", tweet['user.location']))
                     #print(tweet['user.location'])
-                        doc.add(StringField("text",tweet['text'],Field.Store.YES))
+                        doc.add(TextField("text",tweet['text'],Field.Store.YES))
                     #doc.add(Field("created_at", DateTools.stringToDate(tweet['created_at']),Field.Store.YES))
-                        doc.add(StringField("created_at", tweet['created_at'], Field.Store.YES))
+                        doc.add(TextField("created_at", tweet['created_at'], Field.Store.YES))
                     # doc.add(IntPoint("followers", tweet['user.followers_count'],Field.Store.YES))
                     # doc.add(IntPoint("friends", tweet['friends_count'],Field.Store.YES))
                         writer.addDocument(doc)
